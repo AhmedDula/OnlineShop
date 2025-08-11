@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('parts/header.ejs') %>
+  <body>
+    <%- include('parts/navbar.ejs')%>
+    <div class="container my-5">
+      <h2 class="mb-4">Your Shopping Cart</h2>
+      <% if (items.length === 0) { %>
+        <div class="alert alert-info">
+          Your cart is empty. <a href="/">Go back to shopping</a>
+        </div>
+      <% }else{ %>
+      <div class="row">
+        <% for(let item of items) { %>
+        <div class="col-12 mb-3" >
+          <div class="card shadow-sm" >
+            <div class="row g-0 align-items-center">
+              <div style="width: fit-content;" class="col-md-3 align-items-center justify-content-center">
+                <img
+                  src="<%= item.image %>"
+                  class="img-fluid rounded-start"
+                  style="max-height: 180px; max-width: fit-content; object-fit: cover"
+                  alt="<%= item.name %>"
+                />
+              </div>
+              <div class="col-md-9" style="width: 86%;">
+                <div class="card-body">
+                  <h5 class="card-title"><%= item.name %></h5>
+                  <p class="card-text mb-3">
+                    <strong>Price:</strong> <%= item.price %> $
+                </p>
+                <form method="POST">
+                  <p class="card-text mb-3">
+                    <strong>Quantity:</strong> <input type="number" style="height: 20px; width: 44px; text-align:center;" oninput="if(this.value === '' || this.value < 1 ) this.value = 1;" min="1" value="<%= item.amount %>" name="amount" id="">
+                  </p>
+                  <p class="card-text mb-3">
+                    <strong>Total:</strong> <%= (item.amount * item.price) %> $
+                  </p>
+
+                    <input
+                      type="hidden"
+                      name="productId"
+                      value="<%= item.productId %>"
+                    />
+                    <div class="text-end">
+                      <button              
+                        type="submit"
+                        class="btn btn-danger me-2"
+                        formaction="/cart/delete"
+                      >
+                        Remove from Cart
+                      </button>
+                      <button
+                        type="submit"
+                        class="btn btn-success"
+                        formaction="/cart/save"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+      <% if (items.length === 0) { %>
+        
+      <% } else { %>
+        
+      
+      <h4>
+          Total Price: 
+          <%= items.reduce((sum, item) => sum + (item.amount * item.price), 0).toFixed(2) %> $
+        </h4>
+      <div class=" justify-content-between align-items-center mt-4">
+            <form action="/orders/order" method="post" class="border border-secondary rounded p-4 shadow-sm">
+            <h4 class="mb-4">Shipping Information</h4>
+          
+            <input type="hidden" name="items" value='<%= JSON.stringify(items) %>'>
+            <div class="">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" name="name" value="" class="form-control" id="name" placeholder="Enter your name">
+              <div class="form-text">Please enter your full name.</div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="text" name="email" value="" class="form-control" id="email" placeholder="Enter your email">
+              <div class="form-text">Please enter a valid email address.</div>
+            </div>
+            <div class="mb-3">
+              <label for="city" class="form-label">City</label>
+              <input type="text" name="city" value="" class="form-control" id="city" placeholder="Enter your city">
+              <div class="form-text">Please enter your city.</div>
+            </div>
+          
+          <input
+            type="hidden"
+            name="totalPrice"
+            value="<%= items.reduce((sum, item) => sum + (item.amount * item.price), 0).toFixed(2) %>">
+            
+          
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" name="address" class="form-control" id="address" placeholder="Enter your shipping address">
+          </div>
+      
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" name="phone" class="form-control" id="phone" placeholder="Enter your phone number" pattern="[0-9]{10,15}" required>
+            <div class="form-text">Phone number must be between 10 and 15 digits.</div>
+          </div>
+      
+          <button type="submit" class="btn btn-primary w-100">Confirm Order</button>
+        </form>
+      </div>
+    </div>
+    <% } %>
+<%- include('parts/footer.ejs') %>
+
+  </body>
+</html>

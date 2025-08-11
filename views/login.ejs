@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('parts/header.ejs') %>
+<body>
+    <%- include('parts/navbar.ejs') %>
+
+
+        <div class="container text-center padding-div-cart grid-center">
+            <h3>Login</h3>
+            <form action="/login" method="post" style="max-width: 500px; width: 50%;">
+                <input type="email" class="form-control margin-10px" name="email" placeholder="E-mail" >
+            <% let emailErr = validErrors.find(err => err.path === 'email') %>
+            <% if (emailErr) { %>
+             
+                <p class="alert alert-danger"><%= emailErr.msg %></p>
+            <% } %>
+                <input type="password" class="form-control margin-10px" name="password" placeholder="password" >
+                <% let passwordErr = validErrors.find(err => err.path === 'password') %>
+            <% if (passwordErr) { %>
+             
+                <p class="alert alert-danger"><%= passwordErr.msg %></p>
+            <% } %>
+                <input type="submit" value="Login" class="btn btn-primary">
+            </form>
+            <br>
+
+            
+            <br>
+            <div>
+                don't have account ? <a href="/signup">Create Account</a>
+            </div>
+        </div>
+        <%- include('parts/footer.ejs') %>
+
+</body>
+</html>

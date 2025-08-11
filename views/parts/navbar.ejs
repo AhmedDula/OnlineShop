@@ -1,0 +1,79 @@
+<nav class="navbar custom-navbar  navbar-expand-sm " >
+  
+ 
+
+
+  <div class="container-fluid  mx-xxl-custom ">
+ 
+     <div class="container-brand ">
+    <a class="navbar-brand " href="/">
+      <img src="/logo.JPG" alt="Dula Store" width="60" height="50" class="brand">
+     Dula Store
+    </a>
+  </div>
+     
+   
+   
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="toggler-icon"></span>
+  <span class="toggler-icon"></span>
+  <span class="toggler-icon"></span>
+</button>
+
+<script>
+  document.querySelector('.navbar-toggler').addEventListener('click', function () {
+  this.classList.toggle('open');
+});
+</script>
+    <div class="collapse  navbar-collapse" id="navbarNav">
+      
+
+  
+      
+      <ul class="navbar-nav  d-flex w-100 justify-content-evenly  mb-2 mb-lg-0 " >
+       
+        <li class="nav-item  ">
+          <a class="nav-link  " aria-current="page" href="/">Home</a>
+        </li>
+
+        <% if (isUser && !isAdmin) { %>
+          <li class="nav-item " >
+            <a class="nav-link " href="/cart">Cart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/orders">Orders</a>
+          </li>
+        <% }else if(!isUser) { %>
+          <li class="nav-item">
+            <a class="nav-link " href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/signup">Signup</a>
+          </li>
+       <% } %>
+       <% if (isAdmin) { %>
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/admin/add-product">Add Product</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/admin/ManageOrders">Manage orders</a>
+        </li>
+       <% } %>
+        <% if (isUser) { %>
+        <li class="nav-item">
+          <a href="/profile" class="nav-link " style="height: 40px;">Profile</a>
+        </li>
+          <form action="/logout" method="get">
+            <input type="submit" value="Logout !" onclick="localStorage.removeItem('welcomeShown')" class="logout nav-link" >
+          </form>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</nav>

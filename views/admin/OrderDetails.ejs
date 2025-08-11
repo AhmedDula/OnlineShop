@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../parts/header.ejs') %>
+<body>
+<%- include('../parts/navbar.ejs') %>
+    
+  
+<div class="container ">
+    <h1>Order Details</h1>
+    <% if (!order) { %>
+     <div class="alert alert-info">
+         Order is Deleted ! <a href="/admin/ManageOrders">Back ManageOrders Page</a>
+     </div>
+    <% } %>
+    <% if (order) { %>
+     
+    
+    <div class="row table-responsive">
+        <div class="col-md-12">
+            <form action="/admin/orderUpdate/<%= order.id %>" method="post">
+            <table class="table table-bordered border-primary">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer Name</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Date</th>
+                        <th>Update Status</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><%= order.id %></td>
+                        <td><%= order.name %></td>
+                        <td><%= order.email %></td>
+                        <td><%= order.address %></td>
+                        <td><%= order.createdAt.toLocaleDateString() %></td>
+                        <td><%= order.updatedAt.toLocaleDateString() %></td>
+                        <td><select name="orderStatus" id="" class="form-control">
+                            <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                            <option value="shipped" <%= order.status === 'shipped' ? 'selected' : '' %>>Shipped</option>
+                            <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                            <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                            <option value="returned" <%= order.status === 'returned' ? 'selected': '' %>>Returned</option>
+                        </select></td>
+                    </tr>
+                </tbody>
+            </table>
+              <input type="submit" value="Update Status" class="btn btn-primary"  >
+            </form>
+        </div>
+    </div>
+    <hr>
+    <% if (order.items && order.items.length > 0) { %>
+        <h2>Products in this Order</h2>
+        <table class=" table table-bordered border-primary">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% order.items.forEach(product => { %>
+                    <tr>
+                        <td><%= product.name %></td>
+                        <td>$<%= product.price.toFixed(2) %></td>
+                        <td><%= product.amount %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No products found in this order.</p>
+    <% } %>
+    <div class="d-flex justify-content-between mt-3">
+        <a href="/admin/ManageOrders" class="btn btn-secondary">Back to Orders</a>
+        <form action="/admin/DeleteOrder/<%= order.id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+    </div>
+</div>
+<% } %>
+<%- include('../parts/footer.ejs') %>
+</body>
+</html>

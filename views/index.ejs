@@ -1,0 +1,127 @@
+<%- include('parts/header.ejs') %>
+
+<body>
+
+<%- include('parts/navbar.ejs') %>
+
+<div class="dropdown container padding-div-cart" >
+<% if (isAdmin) { %>
+  <div id="welcome-toast" class="t0"> 🫡 ارحب بالاسطورة </div>
+<% } %>
+
+  <form action="/" method="get" >
+    <select name="category" id="" style="padding: 1px 3px 1px 3px; outline: none; " >
+      <option value="all" value="protein" <% if (category === "all") { %>
+        selected
+       <% } %> >all</option>
+      <option value="protein" <% if (category === "protein") { %>
+       selected
+      <% } %>>protein</option>
+      <option value="creatine" <% if (category === "creatine") { %>
+        selected
+       <% } %>>creatine</option>
+      <option value="pre-workout" <% if (category === "pre-workout") { %>
+        selected
+       <% } %>>pre-workout</option>
+      <option value="mass" <% if (category === "mass") { %>
+        selected
+       <% } %>>mass</option>
+    </select>
+    <input type="submit" value="Filter" class="btn btn-primary" style="padding: 1px 3px 1px 3px; ">
+  </form>
+</div>
+
+<div class="container">
+
+<% if (products.length === 0) { %>
+  <div class="alert alert-danger" role="alert">
+    No Products Available
+  </div>
+
+<% } else { %>
+  
+  <div class="row">
+    <% for( let product of products) { %>
+        <div class="col col-12 col-md-6 col-lg-4 col-xl-3 padding-div-cart " >
+            <div class="card grid-center" style="width: 100% ;height: 100%;  ">
+                <img src="<%= product.image %>" class="card-img-top imagee " >
+                <div class="card-body">
+                  <h6 class="card-title " >
+                      <%= product.name %>
+                    </h6><hr>
+                  <h5 class="" style="color: black;opacity: 0.7;"><%=product.price%> $</h5>
+<hr>
+                  <div class="down">
+                    <form action="/cart" method="post">
+                      <div class="d-grid gap-2">
+                        <input type="hidden" name="name" value="<%= product.name %>">
+                        <input type="hidden" name="price" value="<%= product.price %>">
+                        <input type="hidden" name="productId" value="<%= product._id %>">
+                        <input type="hidden" name="image" value="<%= product.image %>">
+                        <input type="number" name="amount" id="" value="1" min="1" oninput="if(this.value === '' || this.value < 1) this.value = 1;"  class="input-text-mid">
+                        
+                        <% if (isAdmin) { %>
+                          <input type="button" value="Add To Cart" onclick="" class="btn btn-primary ">
+                        <% }else{ %>
+                          <input type="submit" value="Add To Cart" onclick="" class="btn btn-primary ">
+                          <% } %>
+                        <% if (isAdmin) { %>
+                         
+                          <input type="button" value="delete" class="btn btn-danger" onclick="location.href='/delete-product/<%= product._id %>'">
+                        <% } %>
+                      </div>
+                    </form>
+                  </div>
+                
+                </div>
+              </div>
+        </div>
+    <% } %>
+    
+
+</div>
+ <%}  %>
+
+
+
+    
+</div>
+
+
+
+
+
+  <script>
+    window.onload = function () {
+      const shown = localStorage.getItem('welcomeShown');
+      const toast = document.getElementById('welcome-toast');
+      if (!shown && toast) {
+        toast.style.display = 'block';
+
+        // ابدأ العد التنازلي للاختفاء
+        setTimeout(() => {
+          toast.style.opacity = '1';
+        }, 100);
+
+        setTimeout(() => {
+          toast.style.opacity = '0';
+        }, 3000);
+
+
+        // احذف العنصر بعد انتهاء الـ transition
+        setTimeout(() => {
+          if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 4000);
+
+        localStorage.setItem('welcomeShown', 'true');
+      } else if (toast) {
+        toast.remove();
+      }
+    };
+  </script>
+
+
+  
+<%- include('parts/footer.ejs') %>
+</body>
+</html>

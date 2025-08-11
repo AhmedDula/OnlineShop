@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../parts/header.ejs') %>
+<body>
+    <%- include('../parts/navbar.ejs') %>
+    <div class="container table-responsive" >
+        <h1>Manage Orders</h1>
+        <div class="row">
+  <% orders.forEach((order, index) => { %>
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Order #<%= index + 1 %></h5> <h5> <a href="/admin/order"></a></h5><hr>
+          <p class="card-text"><strong>Customer:</strong> <%= order.name %></p><hr>
+          <p class="card-text"><strong>Email:</strong> <%= order.email %></p><hr>
+          <p class="card-text"><strong>Address:</strong> <%= order.address %></p><hr>
+          <p class="card-text"><strong>Date:</strong> <%= order.createdAt.toLocaleDateString() %></p><hr>
+          <p class="card-text"><strong>Status:</strong> <%= order.status %></p><hr>
+          <div class="d-flex gap-2">
+            <a href="/admin/OrderDetails/<%= order.id %>" class="btn btn-primary btn-sm">Edit</a>
+            <form action="/admin/DeleteOrder/<%= order.id %>?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% }); %>
+</div>
+        </div>
+
+        
+
+    </div>
+    <%- include('../parts/footer.ejs') %>
+</body>
+</html>

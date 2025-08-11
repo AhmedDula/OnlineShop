@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('parts/header.ejs') %>
+  <body>
+    <%- include('parts/navbar.ejs') %>
+
+    <div class="container text-center padding-div-cart grid-center">
+      <h3>Create Account</h3>
+      <form action="/signup" method="post" style="max-width: 500px; width: 50%">
+        <input
+          type="text"
+          class="form-control margin-10px"
+          name="name"
+          placeholder="username"
+        />
+        <% let UserNameErr = validErrors.find(err => err.path === 'name') %>
+        <% if (UserNameErr) { %>
+         <p class="" style="color: red;">
+          <%= UserNameErr.msg %>
+         </p>
+        <% } %>
+        <input
+          type="email"
+          class="form-control margin-10px"
+          name="email"
+          placeholder="E-mail"
+        />
+        <% let emailErr = validErrors.find(err => err.path === 'email') %>
+        <% if (emailErr) { %>
+         <p class="" style="color: red;">
+          <%= emailErr.msg %>
+         </p>
+        <% }if (err){ %>
+          <p class="" style="color: red;"> 
+            <%= err %>
+             </p>
+          <%}%>
+        <input
+          type="password"
+          class="form-control margin-10px <%= password23 && password23.length > 8 ? 'red-border' : '' %>"
+          name="password"
+          placeholder="password"
+        />
+        <% let passwordErr = validErrors.find(err => err.path === 'password') %>
+        <% if (passwordErr) { %>
+         <p class="" style="color: red;">
+          <%= passwordErr.msg %>
+         </p>
+        <% } %>
+        <% let confirmPasswordErr = validErrors.find(err => err.path === 'confirmPassword') %>
+        <input
+          type="password"
+          class="form-control margin-10px <%= confirmPasswordErr ? 'red' : '' %> "
+          name="confirmPassword"
+          placeholder="confirmPassword"
+        />
+        <% if (confirmPasswordErr) { %>
+          <p class="" style="color: red;">
+            <%= confirmPasswordErr.msg %>
+          </p>
+        <% } %>
+        <input type="submit" value="Create Account" class="btn btn-primary" />
+      </form>
+      <br />
+      <div>Already have Account ? <a href="/login">Login</a></div>
+    </div>
+<%- include('parts/footer.ejs') %>
+
+  </body>
+</html>
